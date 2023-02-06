@@ -17,6 +17,7 @@ const Landing = () => {
 			{/* login */}
 			<div>
 				<button onClick={() => navigate("/login")}>login</button>
+				<button onClick={() => navigate("/signup")}>SignUp</button>
 			</div>
 		</Container>
 	);
