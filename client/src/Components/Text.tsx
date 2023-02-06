@@ -9,9 +9,14 @@ export const SubText = styled.p`
 	font-size: 1.5rem;
 	color: #8d8d8d;
 `;
-export const TimeText = styled.p`
+export const TimeText = styled.div`
 	position: absolute;
 	bottom: 30px;
 	font-size: 1.5rem;
 	color: #705ad4;
+`;
+export const InputText = styled.p`
+	text-align: center;
+	font-size: 1.5rem;
+	color: #8d8d8d;
 `;

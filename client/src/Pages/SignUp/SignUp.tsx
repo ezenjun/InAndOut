@@ -43,7 +43,24 @@ const SignUp = () => {
 						>
 							<MainText>환영합니다</MainText>
 						</motion.div>
-						{seconds > 0 && <TimeText>{seconds}</TimeText>}
+						<TimeText>
+							{seconds > 0 && (
+								<motion.p
+									key="timer"
+									initial="hidden"
+									whileInView="visible"
+									viewport={{ once: true, amount: 0.5 }}
+									transition={{ duration: 1.0 }}
+									variants={{
+										hidden: { opacity: 0, y: 20 },
+										visible: { opacity: 1, y: 0 },
+									}}
+									exit={{ opacity: 0 }}
+								>
+									{seconds}
+								</motion.p>
+							)}
+						</TimeText>
 					</>
 				)}
 			</AnimatePresence>
