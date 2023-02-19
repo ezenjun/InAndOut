@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { StudentsModule } from './students/students.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { AppService } from './app.service';
       }),
       inject: [ConfigService],
     }),
+    StudentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
