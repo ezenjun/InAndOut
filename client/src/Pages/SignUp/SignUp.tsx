@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { MainText, TimeText } from "../../Components/Text";
 
 const SignUp = () => {
-	const [step, setStep] = useState(1);
-	const [seconds, setSeconds] = useState(5);
+	const [seconds, setSeconds] = useState(3);
 
 	const navigate = useNavigate();
 
@@ -27,42 +26,38 @@ const SignUp = () => {
 		<Container>
 			<AnimatePresence>
 				{/* 환영합니다 */}
-				{step === 1 && (
-					<>
-						<motion.div
-							key="setroom"
+				<motion.div
+					key="setroom"
+					initial="hidden"
+					whileInView="visible"
+					viewport={{ once: true, amount: 0.5 }}
+					transition={{ duration: 1.0 }}
+					variants={{
+						hidden: { opacity: 0, y: 100 },
+						visible: { opacity: 1, y: 0 },
+					}}
+					exit={{ opacity: 0 }}
+				>
+					<MainText>환영합니다</MainText>
+				</motion.div>
+				<TimeText>
+					{seconds > 0 && (
+						<motion.p
+							key="timer"
 							initial="hidden"
 							whileInView="visible"
 							viewport={{ once: true, amount: 0.5 }}
 							transition={{ duration: 1.0 }}
 							variants={{
-								hidden: { opacity: 0, y: 100 },
+								hidden: { opacity: 0, y: 20 },
 								visible: { opacity: 1, y: 0 },
 							}}
 							exit={{ opacity: 0 }}
 						>
-							<MainText>환영합니다</MainText>
-						</motion.div>
-						<TimeText>
-							{seconds > 0 && (
-								<motion.p
-									key="timer"
-									initial="hidden"
-									whileInView="visible"
-									viewport={{ once: true, amount: 0.5 }}
-									transition={{ duration: 1.0 }}
-									variants={{
-										hidden: { opacity: 0, y: 20 },
-										visible: { opacity: 1, y: 0 },
-									}}
-									exit={{ opacity: 0 }}
-								>
-									{seconds}
-								</motion.p>
-							)}
-						</TimeText>
-					</>
-				)}
+							{seconds}
+						</motion.p>
+					)}
+				</TimeText>
 			</AnimatePresence>
 		</Container>
 	);

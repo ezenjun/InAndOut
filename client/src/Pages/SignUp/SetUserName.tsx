@@ -1,20 +1,16 @@
-import React, {
-	useState,
-	InputHTMLAttributes,
-	ButtonHTMLAttributes,
-} from "react";
+import React, { useState, InputHTMLAttributes } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Container } from "../../Components/Container";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { InputText, MainText } from "../../Components/Text";
+import ProgressBar from "../../Components/ProgressBar";
+import { Line } from "../../Components/Line";
+import { Button } from "../../Components/BasicButton";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	valid: boolean;
 	value: string;
-}
-interface buttonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-	valid: boolean;
 }
 
 const SetUserName = () => {
@@ -39,67 +35,37 @@ const SetUserName = () => {
 		<Container>
 			{/* 사용자 이름 설정 */}
 			<AnimatePresence>
-				<ProgressBar>
-					<motion.div
-						initial="hidden"
-						whileInView="visible"
-						viewport={{ once: true, amount: 0.5 }}
-						transition={{ duration: 0.5 }}
-						variants={{
-							hidden: { opacity: 0, y: 50 },
-							visible: { opacity: 1, y: 0 },
-						}}
-						exit={{ opacity: 0 }}
-					>
-						1 유저 설정
-					</motion.div>
-					<motion.div
-						initial="hidden"
-						whileInView="visible"
-						viewport={{ once: true, amount: 0.5 }}
-						transition={{ duration: 0.5 }}
-						variants={{
-							hidden: { opacity: 0, y: 50 },
-							visible: { opacity: 1, y: 0 },
-						}}
-						exit={{ opacity: 0 }}
-					>
-						2 독서실 설정
-					</motion.div>
-				</ProgressBar>
-				<motion.div
-					key="setUserName"
+				<ProgressBar page={1} />
+				<CenterContainer
 					initial="hidden"
 					whileInView="visible"
-					viewport={{ once: false, amount: 0.5 }}
 					transition={{ duration: 0.5 }}
 					variants={{
-						hidden: { opacity: 0, y: 100 },
+						hidden: { opacity: 0, y: 50 },
 						visible: { opacity: 1, y: 0 },
 					}}
 					exit={{ opacity: 0 }}
 				>
-					<CenterContainer>
-						<MainText>독서실명을 알려주세요!</MainText>
-						<InputContainer>
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									boxSizing: "content-box",
-								}}
-							>
-								<Input
-									value={userName}
-									valid={userNameValid}
-									type="text"
-									onChange={handleUserName}
-									maxLength={20}
-								/>
-								<InputText>({userNameLength}/20)</InputText>
-							</div>
-							<Line></Line>
-						</InputContainer>
+					<MainText>독서실명을 알려주세요!</MainText>
+					<InputContainer>
+						<div
+							style={{
+								display: "flex",
+								alignItems: "center",
+								boxSizing: "border-box",
+								padding: "10px",
+							}}
+						>
+							<Input
+								value={userName}
+								valid={userNameValid}
+								type="text"
+								onChange={handleUserName}
+								maxLength={20}
+							/>
+							<InputText>{userNameLength}/20</InputText>
+						</div>
+						<Line></Line>
 						<Button
 							valid={userNameValid}
 							disabled={!userNameValid}
@@ -107,34 +73,27 @@ const SetUserName = () => {
 						>
 							다음
 						</Button>
-					</CenterContainer>
-				</motion.div>
+					</InputContainer>
+				</CenterContainer>
 			</AnimatePresence>
 		</Container>
 	);
 };
 
-const CenterContainer = styled.div`
+const CenterContainer = styled(motion.div)`
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	width: 100%;
-	height: 100%;
+	/* height: 100%; */
 	gap: 20px;
-`;
-const ProgressBar = styled.div`
-	display: flex;
-	position: absolute;
-	justify-content: space-between;
-	width: 30%;
-	top: 50px;
 `;
 const InputContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
+	box-sizing: border-box;
 `;
 const Input = styled.input<InputProps>`
 	${(props) =>
@@ -145,34 +104,16 @@ const Input = styled.input<InputProps>`
 	outline: none;
 	background-color: transparent;
 	height: 30px;
+	width: 100%;
 	padding: 20px 20px;
 	margin: 8px 0;
 	box-sizing: border-box;
 	font-size: 30px;
 	font-weight: 700;
 	text-align: center;
-	box-sizing: border-box;
 	*:focus {
 		outline: none;
 	}
 `;
-const Line = styled.div`
-	height: 2px;
-	width: 100%;
-	background-color: #bbbbbb;
-	margin-bottom: 20px;
-`;
-const Button = styled.button<buttonProps>`
-	${(props) =>
-		props.valid
-			? "background-color: #705ad4"
-			: "background-color: #DADADA"};
-	width: 100%;
-	border-radius: 64px;
-	padding: 12px;
-	border: none;
-	color: #ffffff;
-	font-size: 20px;
-	font-weight: 700;
-`;
+
 export default SetUserName;
