@@ -7,6 +7,7 @@ import { InputText, MainText } from "../../Components/Text";
 import ProgressBar from "../../Components/ProgressBar";
 import { Line } from "../../Components/Line";
 import { Button } from "../../Components/BasicButton";
+import InputComponent from "../../Components/Input";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 	valid: boolean;
@@ -19,6 +20,7 @@ const SetUserName = () => {
 	const [userNameLength, setUserNameLength] = useState<number>(0);
 	const navigate = useNavigate();
 	const onNextClick = () => {
+		console.log(userName);
 		navigate("/signup/setroom");
 	};
 	const handleUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +49,13 @@ const SetUserName = () => {
 					exit={{ opacity: 0 }}
 				>
 					<MainText>독서실명을 알려주세요!</MainText>
-					<InputContainer>
+					<InputComponent
+						value={userName}
+						valid={userNameValid}
+						length={userNameLength}
+						onChange={handleUserName}
+					></InputComponent>
+					{/* <InputContainer>
 						<div
 							style={{
 								display: "flex",
@@ -66,14 +74,14 @@ const SetUserName = () => {
 							<InputText>{userNameLength}/20</InputText>
 						</div>
 						<Line></Line>
-						<Button
-							valid={userNameValid}
-							disabled={!userNameValid}
-							onClick={() => onNextClick()}
-						>
-							다음
-						</Button>
-					</InputContainer>
+					</InputContainer> */}
+					<Button
+						valid={userNameValid}
+						disabled={!userNameValid}
+						onClick={() => onNextClick()}
+					>
+						다음
+					</Button>
 				</CenterContainer>
 			</AnimatePresence>
 		</Container>

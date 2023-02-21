@@ -12,7 +12,7 @@ export const Button = styled.button<buttonProps>`
 	width: 100%;
 	box-sizing: border-box;
 	border-radius: 64px;
-	margin: 0 10px;
+	/* margin: 0 10px; */
 	padding: 12px;
 	border: none;
 	color: #ffffff;

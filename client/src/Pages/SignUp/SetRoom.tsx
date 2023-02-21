@@ -4,7 +4,7 @@ import { Container } from "../../Components/Container";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MainText, SubText, TimeText } from "../../Components/Text";
-import CreateRoom from "../../Components/CreateRoom/CreateRoom";
+import CreateRoom from "../../Components/SetRoom/CreateRoom";
 import ProgressBar from "../../Components/ProgressBar";
 type Props = {};
 
