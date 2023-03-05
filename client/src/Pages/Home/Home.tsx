@@ -4,6 +4,7 @@ const Home = () => {
 	return (
 		<div>
 			<div>Home</div>
+			<div>HOME 이야야야양ㅎㅎㅎ</div>
 			<button onClick={getFriendList}>Friend List</button>
 		</div>
 	);

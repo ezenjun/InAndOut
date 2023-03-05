@@ -5,32 +5,21 @@ import { TextWrap } from "./CreateRoom";
 type Grid = boolean[][];
 type Props = {
 	roomGrid: Grid;
-	setRoomGrid: React.Dispatch<React.SetStateAction<Grid>>;
 };
 
-const SetRoomGrid = ({ roomGrid, setRoomGrid }: Props) => {
-	const updateCell = (row: number, col: number) => {
-		const newGrid = [...roomGrid];
-		newGrid[row][col] = !newGrid[row][col];
-		setRoomGrid(newGrid);
-		console.log(roomGrid);
-	};
+const ConfirmRoomGrid = ({ roomGrid }: Props) => {
 	return (
 		<Container>
 			<TextWrap>
-				<CardMainText>좌석을 제외한 복도만 선택해주세요.</CardMainText>
-				<CardSubText>좌석을 클릭해 복도를 만들어주세요.</CardSubText>
+				<CardMainText>최종 좌석 배치표입니다.</CardMainText>
+				<CardSubText>저장하시겠습니까?</CardSubText>
 			</TextWrap>
 			<GridWrap>
 				{roomGrid.map((row, rowIndex) => (
 					<Row key={rowIndex}>
 						<p>{rowIndex + 1}</p>
 						{row.map((cell, colIndex) => (
-							<Seat
-								key={colIndex}
-								seatValid={cell}
-								onClick={() => updateCell(rowIndex, colIndex)}
-							/>
+							<Seat key={colIndex} seatValid={cell} />
 						))}
 					</Row>
 				))}
@@ -73,9 +62,9 @@ const GridWrap = styled.div`
 `;
 
 const Seat = styled.div<{ seatValid: Boolean }>`
-	background-color: ${(props) => (props.seatValid ? "white" : "#C0C0C0")};
+	background-color: white;
 	border: ${(props) =>
-		props.seatValid ? "1px solid black" : "1px solid #C0C0C0"};
+		props.seatValid ? "1px solid black" : "1px solid white"};
 	width: 60px;
 	height: 40px;
 	border-radius: 8px;
@@ -90,4 +79,4 @@ const Row = styled.div`
 	align-items: center;
 `;
 
-export default SetRoomGrid;
+export default ConfirmRoomGrid;

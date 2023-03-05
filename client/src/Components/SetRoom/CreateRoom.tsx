@@ -1,18 +1,20 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { TopNav } from "./TopNav";
 import { Button } from "../BasicButton";
 import SetRoomName from "./SetRoomName";
 import SetRoomSize from "./SetRoomSize";
 import SetRoomGrid from "./SetRoomGrid";
-
+import ConfirmRoomGrid from "./ConfirmRoomGrid";
+import { Container } from "../../Components/Container";
+import { MainText, SubText, TimeText } from "../../Components/Text";
+import { useNavigate } from "react-router-dom";
 type Props = {};
-interface Cell {
-	value: boolean;
-}
-type Grid = Cell[][];
+
+type Grid = boolean[][];
 const CreateRoom = (props: Props) => {
+	const navigate = useNavigate();
 	const [progress, setProgress] = useState<number>(1);
 	// roomName variable
 	const [roomName, setRoomName] = useState<string>("");
@@ -56,150 +58,221 @@ const CreateRoom = (props: Props) => {
 	const onNextClick = () => {
 		setProgress(progress + 1);
 	};
+	const onComplete = () => {
+		navigate("/home");
+	};
 
 	useEffect(() => {
 		if (rows > 0 && cols > 0) {
 			const rowsArray = new Array(rows);
 			for (let i = 0; i < rows; i++) {
-				rowsArray[i] = new Array(cols).fill({ value: false });
+				rowsArray[i] = new Array(cols).fill(true);
 			}
 			setRoomGrid(rowsArray);
 		}
 	}, [rows, cols]);
 	return (
 		<>
-			{progress < 3 ? (
-				<motion.div
-					key="smallCard"
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, amount: 0.5 }}
-					transition={{ duration: 1.0 }}
-					variants={{
-						hidden: { opacity: 0, y: 100 },
-						visible: { opacity: 1, y: 0 },
-					}}
-					exit={{ opacity: 0 }}
-				>
-					<SmallCard>
-						<TopNav>
-							{progress !== 1 ? (
-								<div onClick={() => setProgress(progress - 1)}>
-									이전
-								</div>
-							) : (
-								<></>
-							)}
-						</TopNav>
-						<IndicationWrap>
-							<IndicationBar progress={progress * 25} />
-						</IndicationWrap>
-						<InnerContainer>
-							{progress === 1 && (
-								<>
-									<SetRoomName
-										roomName={roomName}
-										roomNameValid={roomNameValid}
-										roomNameLength={roomNameLength}
-										handleRoomName={handleRoomName}
-									/>
-									<Button
-										valid={roomNameValid}
-										onClick={() => onNextClick()}
-									>
-										다음
-									</Button>
-								</>
-							)}
-							{progress === 2 && (
-								<>
-									<SetRoomSize
-										row={rows}
-										rowValid={rowValid}
-										col={cols}
-										colValid={colValid}
-										setRow={setRowFunction}
-										setCol={setColFunction}
-									/>
-									<Button
-										valid={colValid && rowValid}
-										onClick={() => onNextClick()}
-									>
-										다음
-									</Button>
-								</>
-							)}
-						</InnerContainer>
-					</SmallCard>
-				</motion.div>
-			) : (
-				<LargeCard
-					key="largeCard"
-					initial="hidden"
-					whileInView="visible"
-					viewport={{ once: true, amount: 0.5 }}
-					transition={{ duration: 1.0 }}
-					variants={{
-						hidden: { opacity: 0 },
-						visible: { opacity: 1 },
-					}}
-					exit={{ opacity: 0 }}
-				>
-					<TopNav>
-						{progress !== 1 ? (
-							<div onClick={() => setProgress(progress - 1)}>
-								이전
-							</div>
-						) : (
-							<></>
-						)}
-					</TopNav>
-					<IndicationWrap>
-						<IndicationBar progress={progress * 25} />
-					</IndicationWrap>
-					<InnerContainer>
-						{progress === 3 && (
-							<>
-								<SetRoomGrid
-									roomGrid={roomGrid}
-									setRoomGrid={setRoomGrid}
-								></SetRoomGrid>
-								<div
-									style={{
-										display: "flex",
-										justifyContent: "center",
-										width: "100%",
-									}}
-								>
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											width: "50%",
-										}}
-									>
-										<Button
-											valid={roomNameValid}
-											onClick={() => onNextClick()}
+			{progress !== 5 ? (
+				<>
+					{progress < 3 ? (
+						<motion.div
+							key="smallCard"
+							initial="hidden"
+							whileInView="visible"
+							viewport={{ once: true, amount: 0.5 }}
+							transition={{ duration: 1.0 }}
+							variants={{
+								hidden: { opacity: 0, y: 100 },
+								visible: { opacity: 1, y: 0 },
+							}}
+							exit={{ opacity: 0 }}
+						>
+							<SmallCard>
+								<TopNav>
+									{progress !== 1 ? (
+										<div
+											onClick={() =>
+												setProgress(progress - 1)
+											}
 										>
-											다음
-										</Button>
+											이전
+										</div>
+									) : (
+										<></>
+									)}
+								</TopNav>
+								<IndicationWrap>
+									<IndicationBar progress={progress * 25} />
+								</IndicationWrap>
+								<InnerContainer>
+									{progress === 1 && (
+										<>
+											<SetRoomName
+												roomName={roomName}
+												roomNameValid={roomNameValid}
+												roomNameLength={roomNameLength}
+												handleRoomName={handleRoomName}
+											/>
+											<Button
+												valid={roomNameValid}
+												onClick={() => onNextClick()}
+											>
+												다음
+											</Button>
+										</>
+									)}
+									{progress === 2 && (
+										<>
+											<SetRoomSize
+												row={rows}
+												rowValid={rowValid}
+												col={cols}
+												colValid={colValid}
+												setRow={setRowFunction}
+												setCol={setColFunction}
+											/>
+											<Button
+												valid={colValid && rowValid}
+												onClick={() => onNextClick()}
+											>
+												다음
+											</Button>
+										</>
+									)}
+								</InnerContainer>
+							</SmallCard>
+						</motion.div>
+					) : (
+						<LargeCard
+							key="largeCard"
+							initial="hidden"
+							whileInView="visible"
+							viewport={{ once: true, amount: 0.5 }}
+							transition={{ duration: 1.0 }}
+							variants={{
+								hidden: { opacity: 0 },
+								visible: { opacity: 1 },
+							}}
+							exit={{ opacity: 0 }}
+						>
+							<TopNav>
+								{progress !== 1 ? (
+									<div
+										onClick={() =>
+											setProgress(progress - 1)
+										}
+									>
+										이전
 									</div>
-								</div>
-							</>
-						)}
-						{progress === 4 && (
-							<>
+								) : (
+									<></>
+								)}
+							</TopNav>
+							<IndicationWrap>
+								<IndicationBar progress={progress * 25} />
+							</IndicationWrap>
+							<InnerContainer>
+								{progress === 3 && (
+									<>
+										<SetRoomGrid
+											roomGrid={roomGrid}
+											setRoomGrid={setRoomGrid}
+										></SetRoomGrid>
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												width: "100%",
+											}}
+										>
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													width: "50%",
+												}}
+											>
+												<Button
+													valid={roomNameValid}
+													onClick={() =>
+														onNextClick()
+													}
+												>
+													다음
+												</Button>
+											</div>
+										</div>
+									</>
+								)}
+								{progress === 4 && (
+									<>
+										<ConfirmRoomGrid
+											roomGrid={roomGrid}
+										></ConfirmRoomGrid>
+										<div
+											style={{
+												display: "flex",
+												justifyContent: "center",
+												width: "100%",
+											}}
+										>
+											<div
+												style={{
+													display: "flex",
+													alignItems: "center",
+													width: "50%",
+												}}
+											>
+												<Button
+													valid={roomNameValid}
+													onClick={() =>
+														onNextClick()
+													}
+												>
+													저장
+												</Button>
+											</div>
+										</div>
+									</>
+								)}
+							</InnerContainer>
+						</LargeCard>
+					)}
+				</>
+			) : (
+				<Container>
+					<AnimatePresence>
+						<motion.div
+							initial="hidden"
+							whileInView="visible"
+							viewport={{ once: true, amount: 0.5 }}
+							transition={{ duration: 1.0 }}
+							variants={{
+								hidden: { opacity: 0, y: 100 },
+								visible: { opacity: 1, y: 0 },
+							}}
+							exit={{ opacity: 0 }}
+						>
+							<SubText>축하합니다!</SubText>
+							<MainText>{roomName}이 생성되었습니다</MainText>
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									marginTop: "80px",
+								}}
+							>
 								<Button
 									valid={roomNameValid}
-									onClick={() => onNextClick()}
+									onClick={() => onComplete()}
 								>
-									다음
+									시작하기
 								</Button>
-							</>
-						)}
-					</InnerContainer>
-				</LargeCard>
+							</div>
+						</motion.div>
+					</AnimatePresence>
+				</Container>
 			)}
 		</>
 	);
